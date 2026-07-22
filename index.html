@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07150f">
+  <meta name="description" content="Gerador de relatórios de ocorrência do BPROCAM">
+  <title>Relato PM | Gerador de Ocorrências</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="light">
+  <div class="noise"></div>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Início">
+      <span class="brand-mark">R</span>
+      <span><strong>RELATO</strong><small>POLÍCIA MILITAR</small></span>
+    </a>
+    <div class="top-actions">
+      <span class="saved" id="savedStatus"><i></i> Salvo automaticamente</span>
+      <button class="icon-btn" id="themeBtn" aria-label="Alternar tema">◐</button>
+      <button class="new-btn" id="newBtn"><span>＋</span> Nova ocorrência</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="eyebrow"><span></span> SISTEMA DE RELATÓRIOS OPERACIONAIS</div>
+      <h1>Relate com precisão.<br><em>Comunique com clareza.</em></h1>
+      <p>Preencha os dados da ocorrência e gere um relatório padronizado, revisado e pronto para compartilhar.</p>
+      <div class="steps" aria-label="Etapas">
+        <div class="step active" data-step="1"><b>01</b><span>Dados da ocorrência</span></div>
+        <div class="line"></div>
+        <div class="step" data-step="2"><b>02</b><span>Envolvidos e materiais</span></div>
+        <div class="line"></div>
+        <div class="step" data-step="3"><b>03</b><span>Histórico e revisão</span></div>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <form id="reportForm" novalidate>
+        <div class="form-page active" data-page="1">
+          <div class="section-head"><span>01</span><div><h2>Dados da ocorrência</h2><p>Informações básicas para identificar o atendimento.</p></div></div>
+          <div class="grid two">
+            <label><span>Companhia / Unidade <b>*</b></span><select name="unit" required><option value="">Selecione a CIA</option><option value="1ª CIA (Teresina)">1ª CIA (Teresina)</option><option value="2ª CIA (Parnaíba)">2ª CIA (Parnaíba)</option><option value="3ª CIA (Picos)">3ª CIA (Picos)</option><option value="4ª CIA (Floriano)">4ª CIA (Floriano)</option></select></label>
+            <label><span>Protocolo <b>*</b></span><input name="protocol" placeholder="Ex.: 2026.000123" required></label>
+            <label><span>Prefixo da equipe <b>*</b></span><select name="teamPrefix" id="teamPrefix" required><option value="">Selecione o prefixo</option></select></label>
+            <label><span>Data <b>*</b></span><input type="date" name="date" required></label>
+            <label><span>Horário <b>*</b></span><input type="time" name="time" required></label>
+          </div>
+          <div class="section-divider"></div>
+          <h3>Local da ocorrência</h3>
+          <div class="grid address">
+            <label class="wide"><span>Logradouro <b>*</b></span><input name="street" placeholder="Rua, avenida, travessa..." required></label>
+            <label><span>Número</span><input name="number" placeholder="S/N"></label>
+            <label><span>Bairro <b>*</b></span><input name="district" placeholder="Bairro" required></label>
+            <label><span>Cidade <b>*</b></span><input name="city" placeholder="Preenchida pela CIA" readonly required></label>
+          </div>
+        </div>
+
+        <div class="form-page" data-page="2">
+          <div class="section-head"><span>02</span><div><h2>Envolvidos e materiais</h2><p>Adicione quantos registros forem necessários.</p></div></div>
+          <div class="repeat-section">
+            <div class="repeat-title"><div><h3>Natureza</h3><p>Infrações ou fatos relacionados.</p></div><button type="button" class="add-btn" data-add="nature">＋ Adicionar</button></div>
+            <div id="natureList" class="repeat-list"></div>
+          </div>
+          <div class="section-divider"></div>
+          <div class="repeat-section">
+            <div class="repeat-title"><div><h3>Presos / apreendidos</h3><p>Informe nome completo; o relatório exibirá apenas as iniciais.</p></div><button type="button" class="add-btn" data-add="person">＋ Adicionar</button></div>
+            <div id="personList" class="repeat-list"></div>
+          </div>
+          <div class="section-divider"></div>
+          <div class="repeat-section">
+            <div class="repeat-title"><div><h3>Materiais apreendidos</h3><p>Descreva objetos e respectivas quantidades.</p></div><button type="button" class="add-btn" data-add="material">＋ Adicionar</button></div>
+            <div id="materialList" class="repeat-list"></div>
+          </div>
+        </div>
+
+        <div class="form-page" data-page="3">
+          <div class="section-head"><span>03</span><div><h2>Histórico da ocorrência</h2><p>Conte os fatos na ordem em que aconteceram e revise a ortografia antes de finalizar.</p></div></div>
+          <label><span>Operação</span><input name="operation" placeholder="Digite ordinário ou o nome da operação"><small style="display:block;color:var(--muted);font-size:10px;margin-top:7px">“Ordinário” será exibido como serviço ordinário. Outros nomes serão precedidos por OPERAÇÃO.</small></label>
+          <label class="history-label"><span>Narrativa dos fatos <b>*</b></span><textarea name="history" rows="10" placeholder="Ex.: Durante patrulhamento, a equipe visualizou um indivíduo em atitude suspeita..." required></textarea><small><span id="charCount">0</span> caracteres</small></label>
+          <button type="button" class="ai-btn" id="spellcheckBtn"><span class="spark">✓</span><span><strong>Corrigir ortografia</strong><small>Corrige erros sem alterar os fatos ou reescrever a narrativa</small></span><span class="arrow">→</span></button>
+          <div class="ai-note">A correção é realizada no navegador e não envia dados para serviços externos.</div>
+        </div>
+
+        <div class="form-footer">
+          <button type="button" class="back-btn" id="backBtn">← Voltar</button>
+          <span class="page-indicator"><b id="pageCurrent">1</b> de 3</span>
+          <button type="button" class="next-btn" id="nextBtn">Continuar <span>→</span></button>
+        </div>
+      </form>
+
+      <aside class="preview-panel">
+        <div class="preview-head"><div><span class="live"></span><b>PRÉ-VISUALIZAÇÃO</b></div><span>WhatsApp</span></div>
+        <div class="phone-content"><pre id="preview"></pre></div>
+        <div class="preview-actions">
+          <button id="copyBtn" class="copy-btn">▣ <span>Copiar para WhatsApp</span></button>
+          <button id="downloadBtn" class="download-btn" title="Baixar texto">↓</button>
+        </div>
+        <p class="copy-tip">A formatação em negrito e itálico será mantida.</p>
+      </aside>
+    </section>
+  </main>
+  <div class="toast" id="toast">Relatório copiado!</div>
+  <script src="app.js"></script>
+</body>
+</html>

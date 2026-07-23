@@ -15,3 +15,9 @@ body.light{--bg:#fff;--surface:#fff;--card:#fff;--text:#000;--muted:#000;--input
 /* Evita estouro dos controles nativos de data e hora no iOS */
 .grid>*{min-width:0}input,select,textarea{min-width:0;max-width:100%}input[type="date"],input[type="time"]{display:block;width:100%;min-width:0;max-width:100%}
 @media(max-width:620px){form,.form-page,.grid,label{min-width:0;max-width:100%}input[type="date"],input[type="time"]{font-size:16px;height:52px;padding:10px 12px}.form-page{overflow:hidden}}
+
+/* Safari/iPhone aplica largura mínima própria em date/time; estas regras a anulam */
+input[type="date"],input[type="time"]{-webkit-appearance:none;appearance:none;box-sizing:border-box!important;inline-size:100%!important;min-inline-size:0!important;max-inline-size:100%!important}
+input[type="date"]::-webkit-date-and-time-value,input[type="time"]::-webkit-date-and-time-value{min-width:0;width:100%;text-align:left}
+input[type="date"]::-webkit-calendar-picker-indicator,input[type="time"]::-webkit-calendar-picker-indicator{margin:0;padding:0}
+@media(max-width:620px){.grid.two>label{display:block;width:100%;min-width:0;max-width:100%;overflow:hidden}.grid.two input[type="date"],.grid.two input[type="time"]{display:flex;width:-webkit-fill-available!important;max-width:-webkit-fill-available!important}}

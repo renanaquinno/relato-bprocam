@@ -126,7 +126,7 @@ function buildReport() {
     : normalizedOperation ? `, durante a *${normalizedOperation}*` : '';
   const team = d.teamPrefix ? ` *${d.teamPrefix}*` : '';
   const intro = `Seguindo as determinações do Comandante do BPROCAM, *MAJOR MARCONI*, a equipe${team} da ${cia}/ROCAM, empregada no *Motopatrulhamento*${operation}, em ${d.city || 'cidade'}/PI, `;
-  const history = d.history?.trim() ? sentenceCase(d.history.trim()) : 'descreva aqui a narrativa dos fatos.';
+  const history = d.history?.trim() ? d.history.trim() : 'descreva aqui a narrativa dos fatos.';
   return `*POLÍCIA MILITAR DO PIAUÍ*
 *DEPARTAMENTO GERAL DE OPERAÇÕES - DGO*
 *COMANDO DE POLICIAMENTO ESPECIALIZADO - CPE*
@@ -224,7 +224,7 @@ form.addEventListener('focusout', e => {
   const field = e.target;
   if (!field.matches('input, textarea') || field.readOnly || field.type === 'number') return;
   const isPrisoner = field.closest('[data-type="person"]');
-  const isException = isPrisoner || field.name === 'protocol';
+  const isException = isPrisoner || field.name === 'protocol' || field.name === 'history';
   if (isException || !field.value.trim()) return;
   field.value = field.name === 'operation' ? operationText(field.value) : sentenceCase(field.value);
   if (field.name === 'history') $('#charCount').textContent = field.value.length;
@@ -260,7 +260,7 @@ $('#spellcheckBtn').addEventListener('click', () => {
     return replacement;
   });
   text = text.replace(/\barma de foto\b/gi, match => { count++; return match[0] === 'A' ? 'Arma de fogo' : 'arma de fogo'; });
-  area.value = sentenceCase(text);
+  area.value = text;
   $('#charCount').textContent = area.value.length;
   updatePreview();
   showToast(count ? `${count} correção${count > 1 ? 'ões' : ''} aplicada${count > 1 ? 's' : ''}` : 'Nenhum erro conhecido encontrado');

@@ -483,6 +483,7 @@ function applyReportType(type) {
   form.elements.serviceLocation.required = isService;
   form.elements.serviceType.required = isService;
   form.elements.protocol.required = !isService && !isTraffic;
+  form.elements.protocol.disabled = isService || isTraffic;
   form.elements.history.required = !isService;
   form.elements.operation.required = false;
   form.elements.operation.placeholder = 'Digite ordinário ou o nome da operação';
@@ -537,7 +538,10 @@ function showPage(next) {
 }
 $('#nextBtn').addEventListener('click', () => {
   const current = $(`.form-page[data-page="${page}"]`);
-  const invalid = $$('[required]', current).find(i => !i.value.trim());
+  const invalid = $$('[required]:not([disabled])', current).find(field => {
+    const hiddenContainer = field.closest('[hidden]');
+    return !hiddenContainer && !field.value.trim();
+  });
   if (invalid) { invalid.reportValidity(); invalid.focus(); return; }
   if (page < 3) showPage(page + 1); else { updatePreview(); showToast('Relatório finalizado e pronto!'); $('.preview-panel').scrollIntoView({behavior:'smooth'}); }
 });

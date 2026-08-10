@@ -514,7 +514,7 @@ function applyReportType(type) {
   $('#newBtn').innerHTML = '<span>＋</span> Novo relatório';
   showPage(1);
   updatePreview();
-  scrollTo({ top: 0, behavior: 'smooth' });
+  requestAnimationFrame(() => form.scrollIntoView({ behavior: 'smooth', block: 'start' }));
 }
 
 function showReportPicker() {

@@ -1,6 +1,6 @@
 # Relato PM
 
-Gerador responsivo de relatórios de ocorrência, com pré-visualização instantânea e texto pronto para colar no WhatsApp.
+Gerador responsivo de relatórios operacionais, com pré-visualização instantânea e texto pronto para colar no WhatsApp.
 
 ## Executar
 
@@ -14,13 +14,15 @@ Depois acesse `http://localhost:8000`.
 
 ## Recursos
 
-- formulário guiado em três etapas;
+- página inicial para escolher entre relatório de ocorrência, de serviço ou de trânsito;
+- formulário guiado em três etapas, adaptado ao modelo escolhido;
+- seções próprias para atividades e recursos de serviço, ou envolvidos e veículos de trânsito;
 - prévia em tempo real com marcações do WhatsApp;
 - dia da semana e endereço formatados automaticamente;
 - conversão de nomes completos em iniciais;
 - listas de naturezas, envolvidos e materiais;
 - correção ortográfica local do histórico;
-- rascunho salvo automaticamente no navegador;
+- rascunhos separados por tipo de relatório, salvos automaticamente no navegador;
 - cópia para a área de transferência e download em `.txt`;
 - layout responsivo e tema claro/escuro.
 

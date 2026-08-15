@@ -311,7 +311,7 @@ function buildServiceReport(d) {
   const end = d.endTime || '00:00';
   const serviceHeading = d.serviceType === 'operation'
     ? `OPERAÇÃO ${(d.serviceOperationName || 'NÃO INFORMADA').replace(/^opera[cç][aã]o\s+/i, '').toLocaleUpperCase('pt-BR')}`
-    : d.serviceType === 'planned' ? 'SERVIÇO PLANEJADO' : 'SERVIÇO ORDINÁRIO';
+    : d.serviceType === 'planned' ? 'SERVIÇO PLANEJADA' : 'SERVIÇO ORDINÁRIO';
   const personnel = $$('[data-type="servicePerson"]').map((row, index) => {
     const name = $('input', row).value.trim();
     return name ? `${index + 1} - ${name.toLocaleUpperCase('pt-BR')}` : '';
@@ -385,9 +385,12 @@ function addServicePerson(value = '') {
   const row = document.createElement('div');
   row.className = 'repeat-row single service-person-row';
   row.dataset.type = 'servicePerson';
-  row.innerHTML = `<span class="person-order">${list.children.length + 1}</span><input aria-label="Policial" placeholder="Ex.: 3º SGT MARLOS" value="${value}"><button type="button" class="remove-btn" aria-label="Remover">×</button>`;
+  row.innerHTML = `<span class="person-order">${list.children.length + 1}</span><input aria-label="Policial" placeholder="SGT ROBERTO" value="${value.toLocaleUpperCase('pt-BR')}"><button type="button" class="remove-btn" aria-label="Remover">×</button>`;
   list.append(row);
-  $('input', row).addEventListener('input', updatePreview);
+  $('input', row).addEventListener('input', event => {
+    event.target.value = event.target.value.toLocaleUpperCase('pt-BR');
+    updatePreview();
+  });
   $('.remove-btn', row).addEventListener('click', () => { row.remove(); renumberServicePeople(); updatePreview(); });
 }
 
@@ -443,6 +446,18 @@ function updateServiceOperationField() {
   if (!isOperation) form.elements.serviceOperationName.value = '';
 }
 
+function updateServiceTypeFromPrefix() {
+  if (reportType !== 'service') return;
+  const prefix = form.elements.teamPrefix.value.trim();
+  if (/^(?:PDL|PLD)/i.test(prefix)) {
+    form.elements.serviceType.value = 'planned';
+    updateServiceOperationField();
+  } else if (/^ROCAM/i.test(prefix)) {
+    form.elements.serviceType.value = 'ordinary';
+    updateServiceOperationField();
+  }
+}
+
 function updateTrafficOperationField() {
   const enabled = reportType === 'traffic' && $('#trafficOperationCheck').checked;
   $('#trafficOperationNameField').hidden = !enabled;
@@ -452,6 +467,7 @@ function updateTrafficOperationField() {
 
 $('#addServicePerson').addEventListener('click', () => { addServicePerson(); $('#servicePersonList input:last-of-type')?.focus(); });
 form.elements.serviceType.addEventListener('change', () => { updateServiceOperationField(); updatePreview(); });
+form.elements.teamPrefix.addEventListener('change', () => { updateServiceTypeFromPrefix(); updatePreview(); });
 $('#trafficOperationCheck').addEventListener('change', () => { updateTrafficOperationField(); updatePreview(); });
 createServiceStats();
 renumberServicePeople();
@@ -520,6 +536,7 @@ function applyReportType(type) {
   if (!form.elements.date.value) form.elements.date.value = new Date().toISOString().slice(0,10);
   if (isService && !form.elements.time.value) form.elements.time.value = '06:00';
   if (isService && !form.elements.endTime.value) form.elements.endTime.value = '12:00';
+  updateServiceTypeFromPrefix();
   updateServiceOperationField();
   updateTrafficOperationField();
   $('#charCount').textContent = form.elements.history.value.length;
@@ -569,8 +586,13 @@ form.addEventListener('input', e => {
 form.addEventListener('focusout', e => {
   const field = e.target;
   if (!field.matches('input, textarea') || field.readOnly || field.type === 'number') return;
+  if (field.closest('[data-type="servicePerson"]')) {
+    field.value = field.value.toLocaleUpperCase('pt-BR');
+    updatePreview();
+    return;
+  }
   const isPrisoner = field.closest('[data-type="person"]');
-  const isException = isPrisoner || field.name === 'protocol' || field.name === 'boTco' || field.name === 'history';
+  const isException = isPrisoner || field.name === 'protocol' || field.name === 'boTco' || field.name === 'history' || field.name === 'serviceLocation';
   if (isException || !field.value.trim()) return;
   if (reportType === 'traffic' && (field.closest('[data-type="nature"]') || ['street', 'district', 'operation'].includes(field.name))) return;
   field.value = field.name === 'operation' ? operationText(field.value) : sentenceCase(field.value);

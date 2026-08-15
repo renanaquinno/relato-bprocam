@@ -57,8 +57,9 @@
           <div class="section-head"><span>01</span><div><h2 id="pageOneTitle">Dados da ocorrência</h2><p id="pageOneDescription">Informações básicas para identificar o atendimento.</p></div></div>
           <div class="grid two">
             <label><span>Companhia / Unidade <b>*</b></span><select name="unit" required><option value="">Selecione a CIA</option><option value="1ª CIA (Teresina)">1ª CIA (Teresina)</option><option value="2ª CIA (Parnaíba)">2ª CIA (Parnaíba)</option><option value="3ª CIA (Picos)">3ª CIA (Picos)</option><option value="4ª CIA (Floriano)">4ª CIA (Floriano)</option></select></label>
-            <label id="protocolField"><span>Protocolo <b>*</b></span><input name="protocol" placeholder="Ex.: 2026.000123"></label>
+            <label id="protocolField"><span>Protocolo <b>*</b></span><input name="protocol" placeholder="Ex.: CICC/THE20260112345-123-OC-PM"></label>
             <label><span>Prefixo da equipe <b>*</b></span><select name="teamPrefix" id="teamPrefix" required><option value="">Selecione o prefixo</option></select></label>
+            <label id="boTcoField"><span>Número do BO/TCO</span><input name="boTco" placeholder="Ex.: 00202126/2026"></label>
             <label><span>Data <b>*</b></span><div class="native-field"><input type="date" name="date" required></div></label>
             <label><span>Horário <b>*</b></span><div class="native-field"><input type="time" name="time" required></div></label>
             <label class="service-only" hidden><span>Horário de encerramento <b>*</b></span><div class="native-field"><input type="time" name="endTime"></div></label>
@@ -73,7 +74,7 @@
             <label class="wide"><span>Logradouro <b>*</b></span><input name="street" placeholder="Rua, avenida, travessa..." required></label>
             <label><span>Número</span><input name="number" placeholder="S/N"></label>
             <label><span>Bairro <b>*</b></span><input name="district" placeholder="Bairro" required></label>
-            <label><span>Cidade <b>*</b></span><input name="city" placeholder="Preenchida pela CIA" readonly required></label>
+            <label><span>Cidade <b>*</b></span><input name="city" placeholder="Preenchida pela CIA" required></label>
           </div>
           </div>
         </div>
@@ -89,6 +90,11 @@
           <div class="repeat-section" id="personSection">
             <div class="repeat-title"><div><h3 id="personTitle">Presos / apreendidos</h3><p id="personHelp">Informe nome completo; o relatório exibirá apenas as iniciais.</p></div><button type="button" class="add-btn" data-add="person">＋ Adicionar</button></div>
             <div id="personList" class="repeat-list"></div>
+          </div>
+          <div class="section-divider" id="victimDivider"></div>
+          <div class="repeat-section" id="victimSection">
+            <div class="repeat-title"><div><h3>Vítimas</h3><p>Informe nome completo e idade; o relatório exibirá apenas as iniciais.</p></div><button type="button" class="add-btn" data-add="victim">＋ Adicionar</button></div>
+            <div id="victimList" class="repeat-list"></div>
           </div>
           <div class="section-divider" id="materialDivider"></div>
           <div class="repeat-section" id="materialSection">
@@ -143,6 +149,6 @@
   </main>
   <div class="toast" id="toast">Relatório copiado!</div>
   <datalist id="trafficInfractions"></datalist>
-  <script src="app.js?v=20260815-5"></script>
+  <script src="app.js?v=20260815-merged-1"></script>
 </body>
 </html>

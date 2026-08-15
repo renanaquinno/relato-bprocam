@@ -183,14 +183,18 @@ function buildReport() {
     if (reportType === 'service') return `${sentenceCase(name)}${age ? ` - ${sentenceCase(age)}` : ''}.`;
     return `${initials(name)}${age ? ` - ${age} anos` : ''}.`;
   }).filter(Boolean);
+  const victims = $$('[data-type="victim"]').map(row => {
+    const [name, age] = $$('input', row).map(i => i.value.trim());
+    return name ? `${initials(name)}${age ? ` - ${age} anos` : ''}.` : '';
+  }).filter(Boolean);
   const address = `${sentenceCase(d.street || 'rua xxxxxxxx')}, n° ${d.number || 's/n'} - bairro ${sentenceCase(d.district || 'xxxxxx')}, cidade: ${d.city || 'xxxxxx'}/PI.`;
   const cia = (d.unit || 'xª CIA').replace(/\s*\([^)]*\)/, '');
   const normalizedOperation = operationText(d.operation || '');
-  const operation = normalizedOperation === 'serviço ordinário'
-    ? ', em *serviço ordinário*'
-    : normalizedOperation ? `, durante a *${normalizedOperation}*` : '';
+  const employment = normalizedOperation && normalizedOperation !== 'serviço ordinário'
+    ? `empregada na *${normalizedOperation}*`
+    : `empregada no *Motopatrulhamento*${normalizedOperation === 'serviço ordinário' ? ', em *serviço ordinário*' : ''}`;
   const team = d.teamPrefix ? ` *${d.teamPrefix}*` : '';
-  const intro = `Seguindo as determinações do Comandante do BPROCAM, *MAJOR MARCONI*, a equipe${team} da ${cia}/ROCAM, empregada no *Motopatrulhamento*${operation}, em ${d.city || 'cidade'}/PI, `;
+  const intro = `Seguindo as determinações do Comandante do BPROCAM, *MAJOR MARCONI*, a equipe${team} da ${cia}/ROCAM, ${employment}, em ${d.city || 'cidade'}/PI, `;
   const history = d.history?.trim() ? d.history.trim() : 'descreva aqui a narrativa dos fatos.';
   const commonHeader = `*POLÍCIA MILITAR DO PIAUÍ*
 *DEPARTAMENTO GERAL DE OPERAÇÕES - DGO*
@@ -201,7 +205,7 @@ function buildReport() {
 *${d.unit ? `${d.unit} / BPROCAM` : 'xª CIA (cidade x) / BPROCAM'}*
 
 *PROTOCOLO:*
-- ${d.protocol || 'xxxx'}
+- ${d.protocol || 'xxxx'}${d.boTco ? `\n- BO/TCO: ${d.boTco}` : ''}
 
 *EQUIPE:*
 - ${d.teamPrefix || 'ROCAM00'}
@@ -238,6 +242,9 @@ ${natures.length ? natures.map(x => `- ${x};`).join('\n') : '- Não informada;'}
 
 *PRESO/APREENDIDO:*
 ${people.length ? people.map(x => `- ${x}`).join('\n') : '- Não houve.'}
+
+*VÍTIMA:*
+${victims.length ? victims.map(x => `- ${x}`).join('\n') : '- Não houve.'}
 
 *MATERIAIS APREENDIDOS:*
 ${materials.length ? materials.map(x => `- ${x};`).join('\n') : '- Não houve.'}`;
@@ -354,10 +361,10 @@ function addRow(type, data = []) {
   const list = $(`#${type}List`);
   $('.empty-row', list)?.remove();
   const row = document.createElement('div');
-  row.className = `repeat-row ${type === 'person' ? '' : 'single'}`;
+  row.className = `repeat-row ${type === 'person' || type === 'victim' ? '' : 'single'}`;
   row.dataset.type = type;
   const placeholders = REPORT_TYPES[reportType || 'occurrence'].placeholders;
-  row.innerHTML = type === 'person'
+  row.innerHTML = type === 'person' || type === 'victim'
     ? `<input aria-label="Nome" placeholder="${placeholders[1]}" value="${data[0] || ''}"><input aria-label="Complemento" ${reportType === 'service' ? '' : 'type="number" min="0"'} placeholder="${placeholders[2]}" value="${data[1] || ''}"><button type="button" class="remove-btn" aria-label="Remover">×</button>`
     : `<input aria-label="${type}" placeholder="${type === 'nature' ? placeholders[0] : placeholders[3]}" value="${data[0] || ''}"><button type="button" class="remove-btn" aria-label="Remover">×</button>`;
   if (type === 'nature' && reportType === 'traffic') $('input', row).setAttribute('list', 'trafficInfractions');
@@ -369,7 +376,7 @@ function ensureEmpty(type) {
   const list = $(`#${type}List`);
   if (!list.children.length) list.innerHTML = '<div class="empty-row">Nenhum registro adicionado</div>';
 }
-['nature','person','material'].forEach(ensureEmpty);
+['nature','person','victim','material'].forEach(ensureEmpty);
 $$('[data-add]').forEach(btn => btn.addEventListener('click', () => { addRow(btn.dataset.add); $(`#${btn.dataset.add}List input:last-of-type`)?.focus(); }));
 
 function addServicePerson(value = '') {
@@ -482,12 +489,16 @@ function applyReportType(type) {
   $('#historyTitle').textContent = config.history;
   const isService = type === 'service';
   const isTraffic = type === 'traffic';
+  const isOccurrence = type === 'occurrence';
   $$('.service-only').forEach(element => element.hidden = !isService);
   $('#standardLocation').hidden = isService;
   $('#protocolField').hidden = isService || isTraffic;
+  $('#boTcoField').hidden = isService || isTraffic;
   $('#genericDetails').hidden = isService;
   $('#personSection').hidden = isTraffic;
   $('#personDivider').hidden = isTraffic;
+  $('#victimSection').hidden = !isOccurrence;
+  $('#victimDivider').hidden = !isOccurrence;
   $('#materialSection').hidden = isTraffic;
   $('#materialDivider').hidden = isTraffic;
   $('#serviceDetails').hidden = !isService;
@@ -500,6 +511,7 @@ function applyReportType(type) {
   form.elements.serviceType.required = isService;
   form.elements.protocol.required = !isService && !isTraffic;
   form.elements.protocol.disabled = isService || isTraffic;
+  form.elements.boTco.disabled = isService || isTraffic;
   form.elements.history.required = !isService;
   form.elements.operation.required = false;
   form.elements.operation.placeholder = 'Digite ordinário ou o nome da operação';
@@ -509,7 +521,7 @@ function applyReportType(type) {
   $('.hero h1', $('#reportEditor')).innerHTML = `${config.title.replace('RELATÓRIO DE ', 'Relatório de ').toLocaleLowerCase('pt-BR').replace(/^./, c => c.toUpperCase())}.<br><em>Claro e padronizado.</em>`;
   $('#heroDescription').textContent = `Preencha os dados do relatório de ${config.noun} e gere um texto revisado e pronto para compartilhar.`;
   form.reset();
-  ['nature','person','material'].forEach(t => { $(`#${t}List`).innerHTML = ''; ensureEmpty(t); });
+  ['nature','person','victim','material'].forEach(t => { $(`#${t}List`).innerHTML = ''; ensureEmpty(t); });
   $('#servicePersonList').innerHTML = '';
   renumberServicePeople();
   createServiceStats();
@@ -520,7 +532,7 @@ function applyReportType(type) {
     if (form.elements[key].type === 'checkbox') form.elements[key].checked = Boolean(value);
     else form.elements[key].value = value;
   });
-  form.elements.city.value = CIA_CITIES[form.elements.unit.value] || '';
+  if (!form.elements.city.value) form.elements.city.value = CIA_CITIES[form.elements.unit.value] || '';
   if (!form.elements.date.value) form.elements.date.value = new Date().toISOString().slice(0,10);
   if (isService && !form.elements.time.value) form.elements.time.value = '06:00';
   if (isService && !form.elements.endTime.value) form.elements.endTime.value = '12:00';
@@ -580,7 +592,7 @@ form.addEventListener('focusout', e => {
     return;
   }
   const isPrisoner = field.closest('[data-type="person"]');
-  const isException = isPrisoner || field.name === 'protocol' || field.name === 'history' || field.name === 'serviceLocation';
+  const isException = isPrisoner || field.name === 'protocol' || field.name === 'boTco' || field.name === 'history' || field.name === 'serviceLocation';
   if (isException || !field.value.trim()) return;
   if (reportType === 'traffic' && (field.closest('[data-type="nature"]') || ['street', 'district', 'operation'].includes(field.name))) return;
   field.value = field.name === 'operation' ? operationText(field.value) : sentenceCase(field.value);

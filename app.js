@@ -19,7 +19,7 @@ const REPORT_TYPES = {
   traffic: {
     title: 'RELATÓRIO DE TRÂNSITO', noun: 'trânsito', step1: 'Dados do atendimento', step2: 'Natureza da infração',
     page1: 'Dados do atendimento de trânsito', page1Help: 'Informações básicas da fiscalização ou do sinistro.', location: 'Local do fato ou fiscalização',
-    page2: 'Natureza da ocorrência', nature: ['Natureza / enquadramento', 'Digite para pesquisar as principais infrações do CTB ou informe outro enquadramento manualmente.'], person: ['Condutores / envolvidos', 'Informe nome completo e idade, quando disponível.'], material: ['Veículos / documentos', 'Informe placa, modelo, cor e documentos recolhidos.'], history: 'Histórico da fiscalização',
+    page2: 'Natureza da ocorrência', nature: ['Natureza / enquadramento', 'Selecione uma das infrações cadastradas do CTB.'], person: ['Condutores / envolvidos', 'Informe nome completo e idade, quando disponível.'], material: ['Veículos / documentos', 'Informe placa, modelo, cor e documentos recolhidos.'], history: 'Histórico da fiscalização',
     placeholders: ['Art. 230, IV, do CTB', 'Nome completo', 'Idade', 'Honda CG 160, placa ABC1D23, cor preta']
   }
 };
@@ -86,7 +86,7 @@ const formatDate = value => {
 const formatTime = value => value ? `${value.replace(':', 'h')}min.` : '00h00min.';
 const formatDocumentNumber = value => /^s\s*\/\s*n$/i.test((value || '').trim()) ? 'S/N' : (value || '').trim();
 const initials = name => name.trim().split(/\s+/).filter(Boolean).map(n => n[0].toUpperCase()).join('. ') + (name.trim() ? '.' : '');
-const values = type => $$(`[data-type="${type}"] input`).map(i => i.value.trim()).filter(Boolean);
+const values = type => $$(`[data-type="${type}"] input, [data-type="${type}"] select`).map(field => field.value.trim()).filter(Boolean);
 const sentenceCase = value => value
   .split(/(\n\s*\n)/)
   .map(part => /\S/.test(part) && !/^\n/.test(part)
@@ -369,12 +369,15 @@ function addRow(type, data = []) {
   row.className = `repeat-row ${type === 'person' || type === 'victim' ? '' : 'single'}`;
   row.dataset.type = type;
   const placeholders = REPORT_TYPES[reportType || 'occurrence'].placeholders;
-  row.innerHTML = type === 'person' || type === 'victim'
-    ? `<input aria-label="Nome" placeholder="${placeholders[1]}" value="${data[0] || ''}"><input aria-label="Complemento" ${reportType === 'service' ? '' : 'type="number" min="0"'} placeholder="${placeholders[2]}" value="${data[1] || ''}"><button type="button" class="remove-btn" aria-label="Remover">×</button>`
-    : `<input aria-label="${type}" placeholder="${type === 'nature' ? placeholders[0] : placeholders[3]}" value="${data[0] || ''}"><button type="button" class="remove-btn" aria-label="Remover">×</button>`;
-  if (type === 'nature' && reportType === 'traffic') $('input', row).setAttribute('list', 'trafficInfractions');
+  if (type === 'nature' && reportType === 'traffic') {
+    row.innerHTML = `<select aria-label="Natureza da infração"><option value="">Selecione uma infração</option>${TRAFFIC_INFRACTIONS.map(item => `<option value="${item}"${item === data[0] ? ' selected' : ''}>${item}</option>`).join('')}</select><button type="button" class="remove-btn" aria-label="Remover">×</button>`;
+  } else {
+    row.innerHTML = type === 'person' || type === 'victim'
+      ? `<input aria-label="Nome" placeholder="${placeholders[1]}" value="${data[0] || ''}"><input aria-label="Complemento" ${reportType === 'service' ? '' : 'type="number" min="0"'} placeholder="${placeholders[2]}" value="${data[1] || ''}"><button type="button" class="remove-btn" aria-label="Remover">×</button>`
+      : `<input aria-label="${type}" placeholder="${type === 'nature' ? placeholders[0] : placeholders[3]}" value="${data[0] || ''}"><button type="button" class="remove-btn" aria-label="Remover">×</button>`;
+  }
   list.append(row);
-  $$('input', row).forEach(i => i.addEventListener('input', updatePreview));
+  $$('input, select', row).forEach(field => field.addEventListener('input', updatePreview));
   $('.remove-btn', row).addEventListener('click', () => { row.remove(); ensureEmpty(type); updatePreview(); });
 }
 function ensureEmpty(type) {
@@ -382,7 +385,7 @@ function ensureEmpty(type) {
   if (!list.children.length) list.innerHTML = '<div class="empty-row">Nenhum registro adicionado</div>';
 }
 ['nature','person','victim','material'].forEach(ensureEmpty);
-$$('[data-add]').forEach(btn => btn.addEventListener('click', () => { addRow(btn.dataset.add); $(`#${btn.dataset.add}List input:last-of-type`)?.focus(); }));
+$$('[data-add]').forEach(btn => btn.addEventListener('click', () => { addRow(btn.dataset.add); $(`#${btn.dataset.add}List input:last-of-type, #${btn.dataset.add}List select:last-of-type`)?.focus(); }));
 
 function addServicePerson(value = '') {
   const list = $('#servicePersonList');
@@ -488,7 +491,7 @@ renumberServicePeople();
 function applyReportType(type) {
   reportType = type;
   const config = REPORT_TYPES[type];
-  $('#reportPicker').hidden = true;
+  $('#reportPicker').hidden = false;
   $('#reportEditor').hidden = false;
   $('#stepOneLabel').textContent = config.step1;
   $('#stepTwoLabel').textContent = config.step2;
@@ -562,14 +565,23 @@ function applyReportType(type) {
   $('#newBtn').innerHTML = '<span>＋</span> Novo relatório';
   showPage(1);
   updatePreview();
-  requestAnimationFrame(() => form.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  requestAnimationFrame(() => scrollElementVertically(form));
 }
 
 function showReportPicker() {
   reportType = null;
   $('#reportEditor').hidden = true;
   $('#reportPicker').hidden = false;
-  scrollTo({ top: 0, behavior: 'smooth' });
+  document.activeElement?.blur();
+  requestAnimationFrame(() => {
+    const root = document.documentElement;
+    const previousBehavior = root.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    root.scrollTop = 0;
+    document.body.scrollTop = 0;
+    window.scrollTo(0, 0);
+    requestAnimationFrame(() => { root.style.scrollBehavior = previousBehavior; });
+  });
 }
 
 $$('[data-report]').forEach(card => card.addEventListener('click', () => applyReportType(card.dataset.report)));
@@ -582,7 +594,12 @@ function showPage(next) {
   $('#pageCurrent').textContent = page;
   $('#backBtn').style.visibility = page === 1 ? 'hidden' : 'visible';
   $('#nextBtn').innerHTML = page === 3 ? 'Finalizar <span>✓</span>' : 'Continuar <span>→</span>';
-  if (innerWidth < 700) form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  if (innerWidth < 700) scrollElementVertically(form);
+}
+
+function scrollElementVertically(element) {
+  const offset = innerWidth < 620 ? 78 : 98;
+  scrollTo({ top: element.getBoundingClientRect().top + scrollY - offset, left: 0, behavior: 'smooth' });
 }
 $('#nextBtn').addEventListener('click', () => {
   const current = $(`.form-page[data-page="${page}"]`);
@@ -591,7 +608,7 @@ $('#nextBtn').addEventListener('click', () => {
     return !hiddenContainer && !field.value.trim();
   });
   if (invalid) { invalid.reportValidity(); invalid.focus(); return; }
-  if (page < 3) showPage(page + 1); else { updatePreview(); showToast('Relatório finalizado e pronto!'); $('.preview-panel').scrollIntoView({behavior:'smooth'}); }
+  if (page < 3) showPage(page + 1); else { updatePreview(); showToast('Relatório finalizado e pronto!'); scrollElementVertically($('.preview-panel')); }
 });
 $('#backBtn').addEventListener('click', () => showPage(page - 1));
 $$('.step').forEach(s => s.addEventListener('click', () => showPage(+s.dataset.step)));

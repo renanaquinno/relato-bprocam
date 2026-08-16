@@ -61,3 +61,12 @@ body.light .stat-row{background:#fbfbfa}body.light .stat-row:has(.stat-check:che
 body:not(.light) .report-picker::after{background:#111114}body:not(.light) .report-picker .report-card,body.light .report-picker .report-card{background:#fff;color:#111114}
 #reportForm{scroll-margin-top:98px}
 @media(max-width:620px){#reportForm{scroll-margin-top:78px}}
+
+/* Garante que campos ocultos pelo tipo de relatório não reapareçam no layout móvel. */
+[hidden]{display:none!important}
+
+/* Mantém os componentes móveis dentro da largura disponível. */
+@media(max-width:620px){main,.workspace,#reportForm,.form-page,.form-page>*{min-width:0;max-width:100%}.repeat-title,.section-head,.stat-main{min-width:0}.repeat-title>div,.section-head>div,.stat-toggle{min-width:0}.repeat-title h3,.repeat-title p,.section-head h2,.section-head p{overflow-wrap:anywhere}.repeat-row select{min-width:0;width:100%}}
+
+/* Checkboxes visuais: o input real não pode herdar width:100% e alargar o formulário. */
+.stat-toggle>input,.choice-check>input{width:1px!important;height:1px!important;min-width:1px!important;margin:0;padding:0}

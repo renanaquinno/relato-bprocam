@@ -117,6 +117,10 @@
           <div class="section-head"><span>03</span><div><h2 id="historyTitle">Histórico da ocorrência</h2><p>Conte os fatos na ordem em que aconteceram e revise a ortografia antes de finalizar.</p></div></div>
           <div id="standardHistoryFields">
           <div id="standardOperationField"><label><span>Operação</span><input name="operation" placeholder="Digite ordinário ou o nome da operação"><small id="operationHelp" style="display:block;color:var(--muted);font-size:10px;margin-top:7px">“Ordinário” será exibido como serviço ordinário. Outros nomes serão precedidos por OPERAÇÃO.</small></label></div>
+          <div id="occurrenceOperationControl" class="traffic-operation" hidden>
+            <label class="choice-check"><input type="checkbox" name="occurrenceOperation" id="occurrenceOperationCheck"><span></span><div><b>Serviço em operação</b><small>Marque quando a ocorrência fizer parte de uma operação.</small></div></label>
+            <label id="occurrenceOperationNameField" hidden><span>Nome da operação <b>*</b></span><input name="occurrenceOperationName" placeholder="Ex.: Cerco Fechado"><small class="field-help">Informe somente o nome; “Operação” será acrescentado automaticamente.</small></label>
+          </div>
           <div id="trafficOperationControl" class="traffic-operation" hidden>
             <label class="choice-check"><input type="checkbox" name="trafficOperation" id="trafficOperationCheck"><span></span><div><b>Serviço em operação</b><small>Marque quando o atendimento fizer parte de uma operação.</small></div></label>
             <label id="trafficOperationNameField" hidden><span>Nome da operação <b>*</b></span><input name="trafficOperationName" placeholder="Ex.: Raio do CPE"><small class="field-help">Informe somente o nome; “Operação” será acrescentado automaticamente.</small></label>
@@ -149,6 +153,6 @@
   </main>
   <div class="toast" id="toast">Relatório copiado!</div>
   <datalist id="trafficInfractions"></datalist>
-  <script src="app.js?v=20260815-merged-1"></script>
+  <script src="app.js?v=20260815-traffic-7"></script>
 </body>
 </html>

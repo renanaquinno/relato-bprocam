@@ -30,37 +30,37 @@ const SERVICE_STATS = [
   ['removal', 'Remoção Veículo', true], ['conducted', 'Pessoas conduzidas']
 ];
 const TRAFFIC_INFRACTIONS = [
-  'Art. 162, I, do CTB — Dirigir sem possuir CNH, PPD ou ACC',
-  'Art. 162, II, do CTB — Dirigir com habilitação cassada ou suspensa',
-  'Art. 162, III, do CTB — Dirigir com categoria diferente da exigida',
-  'Art. 162, V, do CTB — Dirigir com habilitação vencida há mais de 30 dias',
-  'Art. 163 c/c Art. 162 do CTB — Entregar a direção a pessoa não habilitada ou irregular',
-  'Art. 164 c/c Art. 162 do CTB — Permitir posse do veículo a pessoa não habilitada ou irregular',
-  'Art. 165 do CTB — Dirigir sob influência de álcool ou outra substância psicoativa',
-  'Art. 165-A do CTB — Recusar teste, exame clínico, perícia ou outro procedimento',
-  'Art. 167 do CTB — Deixar de usar cinto de segurança',
-  'Art. 168 do CTB — Transportar criança sem observar as normas de segurança',
-  'Art. 169 do CTB — Dirigir sem atenção ou sem os cuidados indispensáveis',
-  'Art. 170 do CTB — Dirigir ameaçando pedestres ou demais veículos',
-  'Art. 175 do CTB — Realizar manobra perigosa, arrancada brusca ou derrapagem',
-  'Art. 181 do CTB — Estacionar em desacordo com a regulamentação',
-  'Art. 182 do CTB — Parar em desacordo com a regulamentação',
-  'Art. 195 do CTB — Desobedecer às ordens da autoridade ou do agente de trânsito',
-  'Art. 208 do CTB — Avançar sinal vermelho ou sinal de parada obrigatória',
-  'Art. 218 do CTB — Transitar em velocidade superior à máxima permitida',
-  'Art. 230, IV, do CTB — Conduzir veículo sem placa de identificação',
-  'Art. 230, V, do CTB — Conduzir veículo não registrado e devidamente licenciado',
-  'Art. 230, IX, do CTB — Conduzir veículo sem equipamento obrigatório ou com ele ineficiente',
-  'Art. 230, XVIII, do CTB — Conduzir veículo em mau estado de conservação',
-  'Art. 232 do CTB — Conduzir veículo sem os documentos de porte obrigatório',
-  'Art. 244, I, do CTB — Conduzir motocicleta sem capacete de segurança',
-  'Art. 244, II, do CTB — Transportar passageiro sem capacete ou fora do assento adequado',
-  'Art. 244, V, do CTB — Transportar criança menor de 10 anos em motocicleta',
-  'Art. 250, I, do CTB — Deixar de manter acesa a luz baixa nas situações obrigatórias',
-  'Art. 252, IV, do CTB — Dirigir usando calçado que não se firme nos pés',
-  'Art. 252, V, do CTB — Dirigir com apenas uma das mãos fora das situações permitidas',
-  'Art. 252, VI, do CTB — Dirigir utilizando fones nos ouvidos',
-  'Art. 252, parágrafo único, do CTB — Dirigir segurando ou manuseando telefone celular'
+  'Art. 162, I, do CTB — Dirigir sem possuir CNH, PPD ou ACC — Multa: R$ 880,41',
+  'Art. 162, II, do CTB — Dirigir com habilitação cassada ou suspensa — Multa: R$ 880,41',
+  'Art. 162, III, do CTB — Dirigir com categoria diferente da exigida — Multa: R$ 586,94',
+  'Art. 162, V, do CTB — Dirigir com habilitação vencida há mais de 30 dias — Multa: R$ 293,47',
+  'Art. 163 c/c Art. 162 do CTB — Entregar a direção a pessoa não habilitada ou irregular — Multa: conforme a irregularidade do art. 162',
+  'Art. 164 c/c Art. 162 do CTB — Permitir posse do veículo a pessoa não habilitada ou irregular — Multa: conforme a irregularidade do art. 162',
+  'Art. 165 do CTB — Dirigir sob influência de álcool ou outra substância psicoativa — Multa: R$ 2.934,70',
+  'Art. 165-A do CTB — Recusar teste, exame clínico, perícia ou outro procedimento — Multa: R$ 2.934,70',
+  'Art. 167 do CTB — Deixar de usar cinto de segurança — Multa: R$ 195,23',
+  'Art. 168 do CTB — Transportar criança sem observar as normas de segurança — Multa: R$ 293,47',
+  'Art. 169 do CTB — Dirigir sem atenção ou sem os cuidados indispensáveis — Multa: R$ 88,38',
+  'Art. 170 do CTB — Dirigir ameaçando pedestres ou demais veículos — Multa: R$ 293,47',
+  'Art. 175 do CTB — Realizar manobra perigosa, arrancada brusca ou derrapagem — Multa: R$ 2.934,70',
+  'Art. 181 do CTB — Estacionar em desacordo com a regulamentação — Multa: conforme o inciso e a situação',
+  'Art. 182 do CTB — Parar em desacordo com a regulamentação — Multa: conforme o inciso e a situação',
+  'Art. 195 do CTB — Desobedecer às ordens da autoridade ou do agente de trânsito — Multa: R$ 195,23',
+  'Art. 208 do CTB — Avançar sinal vermelho ou sinal de parada obrigatória — Multa: R$ 293,47',
+  'Art. 218 do CTB — Transitar em velocidade superior à máxima permitida — Multa: R$ 130,16, R$ 195,23 ou R$ 880,41, conforme o percentual excedido',
+  'Art. 230, IV, do CTB — Conduzir veículo sem placa de identificação — Multa: R$ 293,47',
+  'Art. 230, V, do CTB — Conduzir veículo não registrado e devidamente licenciado — Multa: R$ 293,47',
+  'Art. 230, IX, do CTB — Conduzir veículo sem equipamento obrigatório ou com ele ineficiente — Multa: R$ 195,23',
+  'Art. 230, XVIII, do CTB — Conduzir veículo em mau estado de conservação — Multa: R$ 195,23',
+  'Art. 232 do CTB — Conduzir veículo sem os documentos de porte obrigatório — Multa: R$ 88,38',
+  'Art. 244, I, do CTB — Conduzir motocicleta sem capacete de segurança — Multa: R$ 293,47',
+  'Art. 244, II, do CTB — Transportar passageiro sem capacete ou fora do assento adequado — Multa: R$ 293,47',
+  'Art. 244, V, do CTB — Transportar criança menor de 10 anos em motocicleta — Multa: R$ 293,47',
+  'Art. 250, I, do CTB — Deixar de manter acesa a luz baixa nas situações obrigatórias — Multa: R$ 130,16',
+  'Art. 252, IV, do CTB — Dirigir usando calçado que não se firme nos pés — Multa: R$ 130,16',
+  'Art. 252, V, do CTB — Dirigir com apenas uma das mãos fora das situações permitidas — Multa: R$ 130,16',
+  'Art. 252, VI, do CTB — Dirigir utilizando fones nos ouvidos — Multa: R$ 130,16',
+  'Art. 252, parágrafo único, do CTB — Dirigir segurando ou manuseando telefone celular — Multa: R$ 293,47'
 ];
 $('#trafficInfractions').innerHTML = TRAFFIC_INFRACTIONS.map(item => `<option value="${item}"></option>`).join('');
 const CIA_CITIES = {
@@ -84,6 +84,7 @@ const formatDate = value => {
   return `${day} (${weekday[0].toUpperCase()}${weekday.slice(1)})`;
 };
 const formatTime = value => value ? `${value.replace(':', 'h')}min.` : '00h00min.';
+const formatDocumentNumber = value => /^s\s*\/\s*n$/i.test((value || '').trim()) ? 'S/N' : (value || '').trim();
 const initials = name => name.trim().split(/\s+/).filter(Boolean).map(n => n[0].toUpperCase()).join('. ') + (name.trim() ? '.' : '');
 const values = type => $$(`[data-type="${type}"] input`).map(i => i.value.trim()).filter(Boolean);
 const sentenceCase = value => value
@@ -189,7 +190,9 @@ function buildReport() {
   }).filter(Boolean);
   const address = `${sentenceCase(d.street || 'rua xxxxxxxx')}, n° ${d.number || 's/n'} - bairro ${sentenceCase(d.district || 'xxxxxx')}, cidade: ${d.city || 'xxxxxx'}/PI.`;
   const cia = (d.unit || 'xª CIA').replace(/\s*\([^)]*\)/, '');
-  const normalizedOperation = operationText(d.operation || '');
+  const normalizedOperation = d.occurrenceOperation
+    ? operationText(d.occurrenceOperationName || '')
+    : '';
   const employment = normalizedOperation && normalizedOperation !== 'serviço ordinário'
     ? `empregada na *${normalizedOperation}*`
     : `empregada no *Motopatrulhamento*${normalizedOperation === 'serviço ordinário' ? ', em *serviço ordinário*' : ''}`;
@@ -205,7 +208,7 @@ function buildReport() {
 *${d.unit ? `${d.unit} / BPROCAM` : 'xª CIA (cidade x) / BPROCAM'}*
 
 *PROTOCOLO:*
-- ${d.protocol || 'xxxx'}${d.boTco ? `\n- BO/TCO: ${d.boTco}` : ''}
+- ${formatDocumentNumber(d.protocol) || 'xxxx'}${d.boTco ? `\n- BO/TCO: ${formatDocumentNumber(d.boTco)}` : ''}
 
 *EQUIPE:*
 - ${d.teamPrefix || 'ROCAM00'}
@@ -256,17 +259,17 @@ ${historyBlock}
 
 *Maj Marconi - Cmt do BPROCAM*
 
-*POIS SÓ OS FORTES DE ESPÍRITO AQUI CONSEGUEM LUTAR* 🏍️⚡️`;
+*POIS SÓ OS FORTES DE ESPÍRITO AQUI CONSEGUEM LUTAR* 🏍️ ⚡`;
 }
 
 function buildTrafficReport(d) {
   const natures = values('nature');
-  const unit = d.unit ? `${d.unit} - BPRocam` : '1ª CIA (Teresina) - BPRocam';
+  const unit = d.unit ? `${d.unit} - BPROCAM` : '1ª CIA (Teresina) - BPROCAM';
   const cia = (d.unit || '1ª CIA').replace(/\s*\([^)]*\)/, '');
   const operationName = (d.trafficOperationName || '').trim().replace(/^opera[cç][aã]o\s+/i, '');
-  const serviceContext = d.trafficOperation
-    ? `durante a Operação ${operationName || 'não informada'}`
-    : 'empregada em motopatrulhamento';
+  const employment = d.trafficOperation
+    ? `empregada na *OPERAÇÃO ${(operationName || 'NÃO INFORMADA').toLocaleUpperCase('pt-BR')}*`
+    : 'empregada no *Motopatrulhamento*';
   const streetAddress = [d.street, d.number].filter(Boolean).join(' ').trim();
   const address = [streetAddress, d.district].filter(Boolean).join(', ') || 'Endereço não informado';
   const history = d.history?.trim() || 'Descreva a dinâmica da fiscalização e as medidas administrativas adotadas.';
@@ -275,10 +278,13 @@ function buildTrafficReport(d) {
 *DEPARTAMENTO GERAL DE OPERAÇÕES - DGO*
 *COMANDO DE POLICIAMENTO ESPECIALIZADO - CPE*
 
-*RELATÓRIO DE OCORRÊNCIA*
+*RELATÓRIO DE TRÂNSITO*
 
 *${unit}*
 
+*PROTOCOLO:*
+- CICC: ${formatDocumentNumber(d.protocol) || 'S/N'}
+- B.O: ${formatDocumentNumber(d.boTco) || 'S/N'}
 
 *DATA:*
 - ${formatDate(d.date)}
@@ -290,17 +296,16 @@ function buildTrafficReport(d) {
 - ${address}
 
 *NATUREZA:*
-${natures.length ? natures.map(item => `- ${item.split(' — ')[0]}`).join('\n') : '- Não informada'}
+${natures.length ? natures.map(item => `- ${item}`).join('\n') : '- Não informada'}
 
 
 *HISTÓRICO:*
 
-Seguindo as determinações do *Comandante do Batalhão ROCAM, Major Marconi, a equipe da ${cia}/BPRocam ${serviceContext},*
-A equipe *${d.teamPrefix || 'ROCAM00'}* ${history[0]?.toLocaleLowerCase('pt-BR')}${history.slice(1)}
+Seguindo as determinações do Comandante do BPROCAM, *MAJOR MARCONI*, a equipe *${d.teamPrefix || 'ROCAM00'}* da ${cia}/ROCAM, ${employment}, em ${d.city || 'cidade'}/PI, ${history[0]?.toLocaleLowerCase('pt-BR')}${history.slice(1)}
 
-*Maj Marconi - Cmt do BPRocam*
+*Maj Marconi - Cmt do BPROCAM*
 
-*POIS SÓ OS FORTES DE ESPÍRITO AQUI CONSEGUEM LUTAR!*`;
+*POIS SÓ OS FORTES DE ESPÍRITO AQUI CONSEGUEM LUTAR!* 🏍️ ⚡`;
 }
 
 function buildServiceReport(d) {
@@ -465,10 +470,18 @@ function updateTrafficOperationField() {
   if (!enabled) form.elements.trafficOperationName.value = '';
 }
 
+function updateOccurrenceOperationField() {
+  const enabled = reportType === 'occurrence' && $('#occurrenceOperationCheck').checked;
+  $('#occurrenceOperationNameField').hidden = !enabled;
+  form.elements.occurrenceOperationName.required = enabled;
+  if (!enabled) form.elements.occurrenceOperationName.value = '';
+}
+
 $('#addServicePerson').addEventListener('click', () => { addServicePerson(); $('#servicePersonList input:last-of-type')?.focus(); });
 form.elements.serviceType.addEventListener('change', () => { updateServiceOperationField(); updatePreview(); });
 form.elements.teamPrefix.addEventListener('change', () => { updateServiceTypeFromPrefix(); updatePreview(); });
 $('#trafficOperationCheck').addEventListener('change', () => { updateTrafficOperationField(); updatePreview(); });
+$('#occurrenceOperationCheck').addEventListener('change', () => { updateOccurrenceOperationField(); updatePreview(); });
 createServiceStats();
 renumberServicePeople();
 
@@ -492,8 +505,12 @@ function applyReportType(type) {
   const isOccurrence = type === 'occurrence';
   $$('.service-only').forEach(element => element.hidden = !isService);
   $('#standardLocation').hidden = isService;
-  $('#protocolField').hidden = isService || isTraffic;
-  $('#boTcoField').hidden = isService || isTraffic;
+  $('#protocolField').hidden = isService;
+  $('#boTcoField').hidden = isService;
+  $('#protocolField > span').innerHTML = isTraffic ? 'Protocolo CICC' : 'Protocolo <b>*</b>';
+  $('#boTcoField > span').textContent = isTraffic ? 'Número do B.O' : 'Número do BO/TCO';
+  form.elements.protocol.placeholder = isTraffic ? 'S/N ou número do CICC' : 'Ex.: CICC/THE20260112345-123-OC-PM';
+  form.elements.boTco.placeholder = isTraffic ? 'S/N ou número do B.O' : 'Ex.: 00202126/2026';
   $('#genericDetails').hidden = isService;
   $('#personSection').hidden = isTraffic;
   $('#personDivider').hidden = isTraffic;
@@ -503,15 +520,16 @@ function applyReportType(type) {
   $('#materialDivider').hidden = isTraffic;
   $('#serviceDetails').hidden = !isService;
   $('#standardHistoryFields').hidden = isService;
-  $('#standardOperationField').hidden = isTraffic;
+  $('#standardOperationField').hidden = true;
+  $('#occurrenceOperationControl').hidden = !isOccurrence;
   $('#trafficOperationControl').hidden = !isTraffic;
   $('#serviceReview').hidden = !isService;
   form.elements.endTime.required = isService;
   form.elements.serviceLocation.required = isService;
   form.elements.serviceType.required = isService;
   form.elements.protocol.required = !isService && !isTraffic;
-  form.elements.protocol.disabled = isService || isTraffic;
-  form.elements.boTco.disabled = isService || isTraffic;
+  form.elements.protocol.disabled = isService;
+  form.elements.boTco.disabled = isService;
   form.elements.history.required = !isService;
   form.elements.operation.required = false;
   form.elements.operation.placeholder = 'Digite ordinário ou o nome da operação';
@@ -538,6 +556,7 @@ function applyReportType(type) {
   if (isService && !form.elements.endTime.value) form.elements.endTime.value = '12:00';
   updateServiceTypeFromPrefix();
   updateServiceOperationField();
+  updateOccurrenceOperationField();
   updateTrafficOperationField();
   $('#charCount').textContent = form.elements.history.value.length;
   $('#newBtn').innerHTML = '<span>＋</span> Novo relatório';
@@ -586,13 +605,18 @@ form.addEventListener('input', e => {
 form.addEventListener('focusout', e => {
   const field = e.target;
   if (!field.matches('input, textarea') || field.readOnly || field.type === 'number') return;
+  if (field.name === 'protocol' || field.name === 'boTco') {
+    field.value = formatDocumentNumber(field.value);
+    updatePreview();
+    return;
+  }
   if (field.closest('[data-type="servicePerson"]')) {
     field.value = field.value.toLocaleUpperCase('pt-BR');
     updatePreview();
     return;
   }
   const isPrisoner = field.closest('[data-type="person"]');
-  const isException = isPrisoner || field.name === 'protocol' || field.name === 'boTco' || field.name === 'history' || field.name === 'serviceLocation';
+  const isException = isPrisoner || field.name === 'history' || field.name === 'serviceLocation';
   if (isException || !field.value.trim()) return;
   if (reportType === 'traffic' && (field.closest('[data-type="nature"]') || ['street', 'district', 'operation'].includes(field.name))) return;
   field.value = field.name === 'operation' ? operationText(field.value) : sentenceCase(field.value);

@@ -3,6 +3,12 @@ const $$ = (s, root = document) => [...root.querySelectorAll(s)];
 const form = $('#reportForm');
 let page = 1;
 let reportType = null;
+try {
+  ['relatoDraft', 'relatoDraft-occurrence', 'relatoDraft-service', 'relatoDraft-traffic']
+    .forEach(key => localStorage.removeItem(key));
+} catch {
+  // O formulário funciona normalmente mesmo quando o armazenamento local está indisponível.
+}
 const REPORT_TYPES = {
   occurrence: {
     title: 'RELATÓRIO DE OCORRÊNCIA', noun: 'ocorrência', step1: 'Dados da ocorrência', step2: 'Envolvidos e materiais',
@@ -257,7 +263,9 @@ ${details}
 
 ${historyBlock}
 
-*Maj Marconi - Cmt do BPROCAM*
+*REVISÃO*: Nome - Posto/Grad
+
+_Maj Marconi - Cmt do BPROCAM_
 
 *POIS SÓ OS FORTES DE ESPÍRITO AQUI CONSEGUEM LUTAR* 🏍️ ⚡`;
 }
@@ -303,7 +311,9 @@ ${natures.length ? natures.map(item => `- ${item}`).join('\n') : '- Não informa
 
 Seguindo as determinações do Comandante do BPROCAM, *MAJOR MARCONI*, a equipe *${d.teamPrefix || 'ROCAM00'}* da ${cia}/ROCAM, ${employment}, em ${d.city || 'cidade'}/PI, ${history[0]?.toLocaleLowerCase('pt-BR')}${history.slice(1)}
 
-*Maj Marconi - Cmt do BPROCAM*
+*REVISÃO*: Nome - Posto/Grad
+
+_Maj Marconi - Cmt do BPROCAM_
 
 *POIS SÓ OS FORTES DE ESPÍRITO AQUI CONSEGUEM LUTAR!* 🏍️ ⚡`;
 }
@@ -356,10 +366,6 @@ ${stats}`;
 
 function updatePreview() {
   $('#preview').textContent = buildReport();
-  if (reportType) localStorage.setItem(`relatoDraft-${reportType}`, JSON.stringify(Object.fromEntries(new FormData(form))));
-  $('#savedStatus').innerHTML = '<i></i> Salvo agora';
-  clearTimeout(updatePreview.timer);
-  updatePreview.timer = setTimeout(() => $('#savedStatus').innerHTML = '<i></i> Salvo automaticamente', 1200);
 }
 
 function addRow(type, data = []) {
@@ -546,17 +552,6 @@ function applyReportType(type) {
   $('#servicePersonList').innerHTML = '';
   renumberServicePeople();
   createServiceStats();
-  const legacyDraft = type === 'occurrence' ? localStorage.getItem('relatoDraft') : null;
-  const draft = JSON.parse(localStorage.getItem(`relatoDraft-${type}`) || legacyDraft || 'null');
-  if (draft) Object.entries(draft).forEach(([key,value]) => {
-    if (!form.elements[key]) return;
-    if (form.elements[key].type === 'checkbox') form.elements[key].checked = Boolean(value);
-    else form.elements[key].value = value;
-  });
-  if (!form.elements.city.value) form.elements.city.value = CIA_CITIES[form.elements.unit.value] || '';
-  if (!form.elements.date.value) form.elements.date.value = new Date().toISOString().slice(0,10);
-  if (isService && !form.elements.time.value) form.elements.time.value = '06:00';
-  if (isService && !form.elements.endTime.value) form.elements.endTime.value = '12:00';
   updateServiceTypeFromPrefix();
   updateServiceOperationField();
   updateOccurrenceOperationField();
@@ -624,6 +619,10 @@ form.addEventListener('focusout', e => {
   if (!field.matches('input, textarea') || field.readOnly || field.type === 'number') return;
   if (field.name === 'protocol' || field.name === 'boTco') {
     field.value = formatDocumentNumber(field.value);
+    updatePreview();
+    return;
+  }
+  if (field.classList.contains('stat-reference')) {
     updatePreview();
     return;
   }

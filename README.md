@@ -22,7 +22,7 @@ Depois acesse `http://localhost:8000`.
 - conversão de nomes completos em iniciais;
 - listas de naturezas, envolvidos e materiais;
 - correção ortográfica local do histórico;
-- rascunhos separados por tipo de relatório, salvos automaticamente no navegador;
+- formulários iniciados vazios, sem armazenamento de dados preenchidos no navegador;
 - cópia para a área de transferência e download em `.txt`;
 - layout responsivo e tema claro/escuro.
 
